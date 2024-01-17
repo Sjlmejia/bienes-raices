@@ -62,9 +62,11 @@ function Amenities({ currentStep, setCurrentStep, finalValues, setFinalValues }:
         <Form.Item
           name='floors'
           label='Floors'
-          rules={[{ required: true, message: 'Please input Total Floors' }]}
+          rules={[
+            { required: true, message: 'Please input Total Floors'
+          }]}
         >
-          <InputNumber className='w-full' type='number' placeholder="Total Floors" />
+          <InputNumber min={0} className='w-full' type='number' placeholder="Total Floors" />
         </Form.Item>
         <Form.Item
           name='facing'
