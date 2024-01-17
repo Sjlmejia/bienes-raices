@@ -22,3 +22,7 @@ html, body {
 .ant-btn:hover, .ant-btn:focus {
   color: #0F1035 !important;
 }
+
+.ant-form-item {
+  margin-bottom: 5px !important;
+}

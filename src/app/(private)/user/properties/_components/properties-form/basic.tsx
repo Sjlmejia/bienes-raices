@@ -1,6 +1,7 @@
 import React from 'react'
 import { PropertiesFormStepProps } from '.'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, InputNumber, Select } from 'antd'
+import { propertyStatuses, propertyTypes } from '@/constants';
 
 function Basic({ currentStep, setCurrentStep, finalValues, setFinalValues }: PropertiesFormStepProps) {
   
@@ -10,9 +11,11 @@ function Basic({ currentStep, setCurrentStep, finalValues, setFinalValues }: Pro
   }
 
   return (
-    <Form layout='vertical' initialValues={finalValues.basic}>
+    <Form 
+      onFinish={onFinish}
+      layout='vertical' initialValues={finalValues.basic}>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Form.Item
           name='name'
           label='Property Name'
@@ -30,15 +33,42 @@ function Basic({ currentStep, setCurrentStep, finalValues, setFinalValues }: Pro
         >
           <Input.TextArea rows={6} placeholder="Property Name"/>
         </Form.Item>
+
+        <Form.Item
+          name='type'
+          label='Type'
+          rules={[{ required: true, message: 'Please input Type' }]}
+        >
+          <Select options= {propertyTypes}/>
+        </Form.Item>
+        <Form.Item
+          name='status'
+          label='Status'
+          rules={[
+            { required: true, message: 'Please input Status' }
+          ]}
+        >
+          <Select options= {propertyStatuses}/>
+        </Form.Item>
+
+        <Form.Item
+          name='price'
+          label='Price'
+          rules={[{ required: true, message: 'Please input Price' }]}
+          >
+          <InputNumber className='w-full' type='number' placeholder="Price"/>
+          </Form.Item>
       </div>
-      <div className="flex justify-end gap-5">
+      <div className="flex justify-end gap-5 mt-7">
         <Button
           disabled={currentStep === 0}
           onClick={() => setCurrentStep(currentStep - 1)}
         >
           Back
         </Button>
-        <Button type="primary" onClick={() => setCurrentStep(currentStep + 1)}>
+        <Button
+          htmlType="submit" 
+          type="primary">
           Next
         </Button>
       </div>

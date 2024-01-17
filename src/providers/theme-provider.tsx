@@ -20,10 +20,20 @@ function ThemeProvider({ children }: { children: React.ReactNode}) {
               colorBorder: '#0F1035',
             },
             Input :{
-              controlHeight: 45,
+              controlHeight: 42,
               boxShadow: 'none',
               activeShadow: 'none',
-            }
+            },
+            Select: {
+              controlHeight: 42,
+              boxShadow: 'none',
+              controlOutline: 'none',
+            },
+            InputNumber :{
+              controlHeight: 42,
+              boxShadow: 'none',
+              activeShadow: 'none',
+            },
           }
         }}
       >

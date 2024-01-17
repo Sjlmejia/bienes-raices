@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { use, useEffect } from 'react';
 
 import { Steps } from 'antd';
 import Basic from './basic';
@@ -63,6 +63,11 @@ function PropertiesForm() {
       />
     }
   ]
+
+  useEffect(() => {
+    console.log(finalValues);
+  }, [finalValues]);
+  
   return (
     <div>
       <Steps current={currentStep} items={steps} />
