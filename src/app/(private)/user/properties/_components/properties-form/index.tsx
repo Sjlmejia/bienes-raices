@@ -20,7 +20,10 @@ function PropertiesForm() {
     basic: {},
     location: {},
     amenities: {},
-    media: {},
+    media: {
+      newlyUploadedFiles: [],
+      images: [],
+    },
     contact: {}
   });
   const [currentStep, setCurrentStep] = React.useState(0);
