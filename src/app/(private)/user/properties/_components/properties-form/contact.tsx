@@ -1,12 +1,20 @@
 import React from 'react'
 import { PropertiesFormStepProps } from '.'
-import { Button, Form, InputNumber, Select, Input } from 'antd'
+import { Button, Form, InputNumber, Select, Input, message } from 'antd'
+import { UploadFilesTOFirebaseAndReturnUrls } from '@/helpers/upload-media';
 
 function Contact({ currentStep, setCurrentStep,finalValues, setFinalValues  }: PropertiesFormStepProps) {
   
-  const onFinish = (values: any) => {
-    const tempFinalValues ={ ...finalValues, contact: values};
-    console.log('Success:', tempFinalValues);
+  const onFinish = async (values: any) => {
+    try {
+      const tempFinalValues ={ ...finalValues, contact: values};
+      const tempMedia = tempFinalValues.media;
+      tempMedia.images  = await UploadFilesTOFirebaseAndReturnUrls(tempMedia.newlyUploadedFiles);
+      tempFinalValues.media = tempMedia;
+      setFinalValues(tempFinalValues);
+    } catch (error:any) {
+      message.error(error.message);
+    }
   }
   // ownerName, ownerEmail, ownerPhone, ownerAddress, showOwnerContact
   return (
