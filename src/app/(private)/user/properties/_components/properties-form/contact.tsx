@@ -2,18 +2,39 @@ import React from 'react'
 import { PropertiesFormStepProps } from '.'
 import { Button, Form, InputNumber, Select, Input, message } from 'antd'
 import { UploadFilesTOFirebaseAndReturnUrls } from '@/helpers/upload-media';
+import { AddProperty } from '@/actions/properties';
+import { useRouter } from 'next/navigation';
 
-function Contact({ currentStep, setCurrentStep,finalValues, setFinalValues  }: PropertiesFormStepProps) {
-  
+function Contact({
+  currentStep,
+  setCurrentStep,
+  finalValues, 
+  setFinalValues,
+  loading,
+  setLoading  
+}: PropertiesFormStepProps) {
+  const router = useRouter();
   const onFinish = async (values: any) => {
     try {
+      setLoading(true);
       const tempFinalValues ={ ...finalValues, contact: values};
       const tempMedia = tempFinalValues.media;
       tempMedia.images  = await UploadFilesTOFirebaseAndReturnUrls(tempMedia.newlyUploadedFiles);
       tempFinalValues.media = tempMedia;
-      setFinalValues(tempFinalValues);
+      const valuesAsperDb = {
+        ...tempFinalValues.basic,
+        ...tempFinalValues.location,
+        ...tempFinalValues.details,
+        ...tempFinalValues.contact,
+        images: tempFinalValues.media.images,
+      }
+      await AddProperty(valuesAsperDb);
+      message.success('Property added successfully');
+      router.push('/user/properties');
     } catch (error:any) {
       message.error(error.message);
+    } finally {
+      setLoading(false);
     }
   }
   // ownerName, ownerEmail, ownerPhone, ownerAddress, showOwnerContact
@@ -66,8 +87,10 @@ function Contact({ currentStep, setCurrentStep,finalValues, setFinalValues  }: P
         >
           Back
         </Button>
-        <Button type="primary" htmlType='submit'>
-          Next
+        <Button type="primary" htmlType='submit'
+          loading={loading}
+        >
+          Save property
         </Button>
       </div>
       Contact
