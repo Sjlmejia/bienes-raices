@@ -55,7 +55,9 @@ function LayoutProvider({ children} : {children: React.ReactNode}) {
     return(
       <div className='lg:px-20 px-5'>
         <div className='bg-primary p-3 flex justify-between items-center rounded-b'>
-          <h1 className="text-2xl text-white font-bold cursor-pointer">
+          <h1 className="text-2xl text-white font-bold cursor-pointer"
+            onClick={() => router.push('/')}
+          >
             Bienes Raices
           </h1>
           <div className='bg-white py-2 px-5 rounded-sm flex items-center gap-5'>

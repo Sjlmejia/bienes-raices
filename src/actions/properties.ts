@@ -1,4 +1,4 @@
-'use serve'
+'use server'
 
 import { GetCurrentUserFromMongoDb } from "./users";
 import prisma from "@/config/db";

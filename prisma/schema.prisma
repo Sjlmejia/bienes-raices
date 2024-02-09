@@ -36,7 +36,7 @@ model Property {
   status           String
   price            Float
   city             String
-  pincode          String
+  pincode          Int
   address          String
   landmark         String
   bedrooms         Int

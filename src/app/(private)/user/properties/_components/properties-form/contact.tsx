@@ -24,11 +24,14 @@ function Contact({
       const valuesAsperDb = {
         ...tempFinalValues.basic,
         ...tempFinalValues.location,
-        ...tempFinalValues.details,
+        ...tempFinalValues.amenities,
         ...tempFinalValues.contact,
         images: tempFinalValues.media.images,
       }
-      await AddProperty(valuesAsperDb);
+      console.log('valuesAsperDb', valuesAsperDb);
+      const response = await AddProperty(valuesAsperDb);
+      console.log('response', response);
+      if(response.error) throw new Error(response.error)
       message.success('Property added successfully');
       router.push('/user/properties');
     } catch (error:any) {
@@ -93,7 +96,6 @@ function Contact({
           Save property
         </Button>
       </div>
-      Contact
     </Form>
   )
 }
