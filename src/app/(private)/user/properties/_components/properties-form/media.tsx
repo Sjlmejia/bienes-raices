@@ -1,7 +1,7 @@
 import React from 'react'
 import { PropertiesFormStepProps } from '.'
 import { Button, Upload, Modal } from 'antd'
-const getBase64 = (file:any) =>
+const getBase64 = (file: any) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -19,7 +19,7 @@ function Media({ currentStep, setCurrentStep, finalValues, setFinalValues }: Pro
     setCurrentStep(currentStep + 1);
   }
 
-  const handlePreview = async (file:any) => {
+  const handlePreview = async (file: any) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -28,8 +28,29 @@ function Media({ currentStep, setCurrentStep, finalValues, setFinalValues }: Pro
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
   return (
-
     <div>
+      <div className='flex flex-wrap gap-5 mb-5'>
+        {finalValues.media.images.map((key: number, image: string) => (
+          <div key={key} className='flex flex-col gap-2 border-dashed border-gray-400 rounded justify-center items-center'>
+            <img src={image} alt="media"
+              className='w-20 h-2o object-cover' />
+            <span className='text-red-500 underline text-sm cursor-pointer'
+              onClick={() => {
+                let tempMedia = finalValues.media;
+                tempMedia.images = tempMedia.images.filter((img: string) => img !== image);
+                setFinalValues({
+                  ...finalValues,
+                  media: {
+                    newlyUploadedFiles: tempFiles,
+                    images: tempMedia.images
+                  }
+                })
+              }}>
+              Delete
+            </span>
+          </div>
+        ))}
+      </div>
       <Upload
         listType="picture-card"
         multiple

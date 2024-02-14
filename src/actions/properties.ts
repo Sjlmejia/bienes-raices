@@ -15,6 +15,26 @@ export const AddProperty = async(property: any) => {
       data: property,
       message: 'Property added successfully'
     }
+  } catch (error: any) { 
+    return {
+      error: error.message
+    }
+  }
+}
+
+export const EditProperty = async (property: any, id : string) => {
+  try {
+    await prisma.property.update({
+      where: { 
+        id
+       },
+      data: property
+    });
+    revalidatePath('/user/properties');
+    return {
+      data: property,
+      message: 'Property updated successfully'
+    }
   } catch (error: any) {
     return {
       error: error.message

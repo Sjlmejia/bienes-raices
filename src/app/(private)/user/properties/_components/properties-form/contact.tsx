@@ -2,24 +2,35 @@ import React from 'react'
 import { PropertiesFormStepProps } from '.'
 import { Button, Form, InputNumber, Select, Input, message } from 'antd'
 import { UploadFilesTOFirebaseAndReturnUrls } from '@/helpers/upload-media';
-import { AddProperty } from '@/actions/properties';
-import { useRouter } from 'next/navigation';
+import { AddProperty, EditProperty } from '@/actions/properties';
+import { useRouter, useParams } from 'next/navigation';
 
 function Contact({
   currentStep,
   setCurrentStep,
-  finalValues, 
+  finalValues,
   setFinalValues,
   loading,
-  setLoading  
+  setLoading,
+  isEdit = false
 }: PropertiesFormStepProps) {
+  const { id } = useParams();
   const router = useRouter();
   const onFinish = async (values: any) => {
     try {
       setLoading(true);
-      const tempFinalValues ={ ...finalValues, contact: values};
+      const tempFinalValues = { ...finalValues, contact: values };
+
+      //handle media upload
       const tempMedia = tempFinalValues.media;
-      tempMedia.images  = await UploadFilesTOFirebaseAndReturnUrls(tempMedia.newlyUploadedFiles);
+      const newImagesURLS = await UploadFilesTOFirebaseAndReturnUrls(
+        tempMedia.newlyUploadedFiles
+      );
+
+      if(newImagesURLS) {
+        tempMedia.images = [...tempMedia.images, ...newImagesURLS];
+      }
+      
       tempFinalValues.media = tempMedia;
       const valuesAsperDb = {
         ...tempFinalValues.basic,
@@ -29,12 +40,16 @@ function Contact({
         images: tempFinalValues.media.images,
       }
       console.log('valuesAsperDb', valuesAsperDb);
-      const response = await AddProperty(valuesAsperDb);
-      console.log('response', response);
-      if(response.error) throw new Error(response.error)
-      message.success('Property added successfully');
+      let response = null;
+      if (isEdit) {
+        response = await EditProperty(valuesAsperDb, id as string);
+      } else {
+        response = await AddProperty(valuesAsperDb);
+      }
+      if (response.error) throw new Error(response.error)
+      message.success(response.message);
       router.push('/user/properties');
-    } catch (error:any) {
+    } catch (error: any) {
       message.error(error.message);
     } finally {
       setLoading(false);
@@ -76,7 +91,7 @@ function Contact({
           rules={[{ required: true, message: 'Please input show owner contact!' }]}
         >
           <Select
-            options= {[
+            options={[
               { label: 'Yes', value: true },
               { label: 'No', value: false },
             ]}

@@ -33,10 +33,10 @@ function ClientSidePropertiesTable({ properties }: { properties: Property[] }) {
       key: 'status',
     },
     {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      render(createdAt: Date) {
-        return dayjs(createdAt).format('DD MM YYYY HH:mm A')
+      title: 'Updated At',
+      dataIndex: 'updatedAt',
+      render(updatedAt: Date) {
+        return dayjs(updatedAt).format('DD MM YYYY HH:mm A')
       }
     },
     {
